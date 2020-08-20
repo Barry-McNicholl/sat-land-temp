@@ -43,11 +43,9 @@ from lazypredict.Supervised import LazyRegressor
 #         print('Invalid year. Please enter a year between 1979 and last year.')
 # year = str(year)
 
-# Previous year should have data for each day so, collect data from this year
-# and up to four years earlier
-last_year = datetime.now().year-1
 # Years to collect data from
-data_years = [last_year-4, last_year-3, last_year-2, last_year-1, last_year]
+data_years = input('Enter the years the data is from (least to most recent,'
+                   + ' separated by a space): ').split()
 regions = ['Dublin', 'Singapore'] # Climate regions
 # Longitude and latitude coordinates of regions for satellite data (N/W/S/E)
 area = ['53.7/-6.5/53.2/-6','1.6/103.7/1.1/104.2']
@@ -58,7 +56,7 @@ for i in range(len(regions)): # For each region
     year_land = [] # Initialise list of land temperatures for each year
     year_cloud = [] # Initialise list of satellite cloud cover for each year
     for j in range(len(data_years)): # For every year
-        year = str(data_years[j])
+        year = data_years[j]
         # Read land temperatures and dates from csv file
         df_land = pd.read_csv(regions[i] + '_land_temp_' + year + '.csv',
                               index_col = 0)
@@ -517,7 +515,8 @@ for i in range(len(regions)): # For each region
     # Plot line of best fit
     ax.plot(all_land, regr.coef_[0][0]*all_land + regr.intercept_[0],
             color='black')
-    ax.set_title(regions[i] + ' Satellite and Land Data Relationship ' + year)
+    ax.set_title(regions[i] + ' Satellite and Land Data Relationship '
+                 + str(data_years[0]) + '-' + str(data_years[4]))
     ax.set_xlabel('Land Temperature (degrees celcius)')
     ax.set_ylabel('Satellite Temperature (degrees celcius)')
     
