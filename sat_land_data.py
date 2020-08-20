@@ -19,7 +19,7 @@ data_years = [last_year-4, last_year-3, last_year-2, last_year-1, last_year]
 regions = ['Dublin', 'Singapore'] # Climate regions
 # Dublin and Singapore land stations
 stations = ['GHCND:EI000003969', 'GHCND:SNM00048698']
-token = 'wYUaHbiJsbyWymfxUAYnkqYHqaEyjNkG' # NCDC web service key token
+token = '' # Add the NCDC web service key token here
 # Longitude and latitude coordinates of regions for satellite data (N/W/S/E)
 area = ['53.7/-6.5/53.2/-6','1.6/103.7/1.1/104.2']
 for i in range(len(regions)): # For each region
