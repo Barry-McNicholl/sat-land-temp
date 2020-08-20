@@ -6,6 +6,10 @@ Contained within this repoistory is the code required to reproduce the results f
 
 You are welcome to cite this paper if you wish to use some or all of the code. This code is for academic and research purposes only.
 
+![Sample Regressions](https://user-images.githubusercontent.com/65912701/90794167-5c87cf00-e304-11ea-8f3b-7c1218e18c92.PNG)
+
+*A sample of the results from the paper.*
+
 ## Code Organization
 
 `python3` was used to write the code.
@@ -29,7 +33,7 @@ The following libraries should be installed before executing the codes.
 
 ### Data
 
-The source of land temperature data in this work is the Global Historical Climatology Network provided by the National Ocenanic and Atmospheric Administration ([NOAA GHCN](https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn)). The satellite temperature data was sourced from the Climate Data Store provided by the European Centre for Medium-Range Weather Forecasts ([ECMWF CDS](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)). Data can be downloaded from these sources from scratch by following the steps outlined for the `sat_land_data.py` script in the next section. Alternatively, the processed data used in this paper is available at this [Google Drive link](https://drive.google.com/drive/folders/1N68hx--Kyj9jFi0XnZihbZUzNMBxdY0i?usp=sharing).
+The source of land temperature data in this work is the Global Historical Climatology Network provided by the National Ocenanic and Atmospheric Administration ([NOAA GHCN](https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn)). The weather variable collected from the GHCN is TAVG which is defined as the average temperature for a given day, measured from 00:00 on that day to 00:00 on the following day. The satellite temperature data was sourced from the Climate Data Store provided by the European Centre for Medium-Range Weather Forecasts ([ECMWF CDS](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)). The weather variable used from the CDS is 2m temperature which is temperature measured at 2m above the surface for a given hour of a day. Data can be downloaded from these sources from scratch by following the steps outlined for the `sat_land_data.py` script in the next section. Alternatively, the processed data used in this paper is available at this [Google Drive link](https://drive.google.com/drive/folders/1N68hx--Kyj9jFi0XnZihbZUzNMBxdY0i?usp=sharing). To compare land and satellite data, the satellite data is averaged over the course of a day. Data for a given day is only utilised if both satellite and land data are available for that day. It was not possible to obtain satellite data from the exact same locations as the land data so, satellite data was instead obtained from the closest locations possible.
 
 ### Scripts
 
