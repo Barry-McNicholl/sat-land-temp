@@ -20,7 +20,7 @@ def main():
     regions = ['Dublin', 'Singapore'] # Climate regions
     # Dublin and Singapore land stations
     stations = ['GHCND:EI000003969', 'GHCND:SNM00048698']
-    token = 'wYUaHbiJsbyWymfxUAYnkqYHqaEyjNkG' # NCDC web service key token
+    token = '' # Add NCDC web service key token here
     # Longitude and latitude coordinates of regions for satellite data
     # (N/W/S/E)
     area = ['53.7/-6.5/53.2/-6','1.6/103.7/1.1/104.2']
