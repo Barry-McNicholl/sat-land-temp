@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 28 16:41:18 2020
-
-@author: Barry
-"""
-
 import json
 import cdsapi
 import requests
