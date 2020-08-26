@@ -201,7 +201,7 @@ def main():
         # Append results for all trains and tests
         all_models.append(model_list) 
         all_sat = [] # Initialise list of satellite values over 5 years
-        all_land = []# Initialise list of land values over 5 years
+        all_land = [] # Initialise list of land values over 5 years
         for j in range(len(year_sat)): # For each year
             # Join satellite values of years together
             all_sat = all_sat + year_sat[j]
@@ -261,7 +261,8 @@ def main():
         ax.plot(all_land, regr.coef_[0][0]*all_land + regr.intercept_[0],
                 color='black')
         ax.set_title(regions[i] + ' Satellite and Land Data Relationship '
-                     + str(data_year[0]) + '-' + str(data_year[4]))
+                     + str(min(list(map(int, data_year)))) + '-'
+                     + str(max(list(map(int, data_year)))))
         ax.set_xlabel('Land Temperature (degrees celcius)')
         ax.set_ylabel('Satellite Temperature (degrees celcius)')
     return all_models, all_metrics
