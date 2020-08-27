@@ -16,7 +16,7 @@ def main():
     token = '' # Add NCDC web service key token here
     # Longitude and latitude coordinates of regions for satellite data
     # (N/W/S/E)
-    area = ['53.7/-6.5/53.2/-6','1.6/103.7/1.1/104.2']
+    area = ['53.7/-6.5/53.2/-6', '1.6/103.7/1.1/104.2']
     for i in range(len(regions)): # For each region
         for j in range(len(data_year)): # For every year
             land_dates = [] # Initialise land date fields
@@ -39,9 +39,8 @@ def main():
                 if (land_response['message'] == "The token parameter provided"
                     + " is not valid."):
                     print("Error: " + land_response['message'])
-                    return 0 # return if token is invalid
-            # Get all items in the response which are mean temperature
-            # readings
+                    return 0 # Return if token is invalid
+            # Get all items in the response that are mean temperature readings
             mean_temps = [item for item in land_response['results']
                           if item['datatype'] == 'TAVG']
             # Get the date field from all mean temperature readings
@@ -49,10 +48,10 @@ def main():
             # Get the actual mean temperature from all mean temperature
             # readings
             land_temps += [item['value'] for item in mean_temps]
-            df_land = pd.DataFrame() # Initialize dataframe
+            df_land = pd.DataFrame() # Initialise dataframe
             # Store dates in dataframe
             df_land['date'] = [datetime.strptime(
-                land_response,"%Y-%m-%dT%H:%M:%S")
+                land_response, "%Y-%m-%dT%H:%M:%S")
                 for land_response in land_dates]
             # Convert mean temperatures from tenths of celsius to celsius and
             # store in dataframe
@@ -61,8 +60,7 @@ def main():
             df_land.to_csv(regions[i] + '_land_temp_' + year + '.csv')
             print('Downloaded Daily Land Temperatures in ' + regions[i]
                   + ' for ' + year)
-            return 0
-            sat_client = cdsapi.Client() # Open a new Client instance
+            sat_client = cdsapi.Client() # Open a satellite client instance
             sat_request = sat_client.retrieve( # Make the satellite api call
                 'reanalysis-era5-single-levels', # ERA5 data set
                 {
