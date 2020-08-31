@@ -25,7 +25,7 @@ def main():
     regions = ['Dublin', 'Singapore'] # Climate regions
     # Longitude and latitude coordinates of regions for satellite data
     # (N/W/S/E)
-    area = ['53.7/-6.5/53.2/-6','1.6/103.7/1.1/104.2']
+    area = ['53.7/-6.5/53.2/-6', '1.6/103.7/1.1/104.2']
     all_models = [] # Initialise list of regression model results
     all_metrics = [] # Initialise list of metrics
     for i in range(len(regions)): # For each region
@@ -67,64 +67,72 @@ def main():
             satmonthtemp = []
             landdaytemp = [] # Initialise land daily temperature values
             landmonthtemp = [] # Initialise land monthly temperature values
-            tempdiff = [] # Initialise temperature difference       
+            tempdiff = [] # Initialise temperature difference
+            # Look through all satellite values, can not assume that there are
+            # values for each date
             for k in range(len(all_t2m)):
-                # 2m temperature for hour of current date
-                curr_t2m = all_t2m[k,:,:]
-                # Moved onto next date
-                if curr_date != satdate[0][k].strftime("%Y-%m-%d"):
-                    # Land value available for date
-                    if (df_land.date == curr_date).any():
-                        # Get mean, covert to celsius and update satellite
-                        # daily temperature
-                        satdaytemp.append(statistics.mean(sathourtemp)-273.15)
-                        # Find value for date
-                        index = df_land[df_land['date']
-                                        == curr_date].index.values[0]
-                        # Update land daily temperatures
-                        landdaytemp.append(df_land['meanTemp'][index])
-                    sathourtemp = [] # Reinitialise
-                    # Update current date
-                    curr_date = satdate[0][k].strftime("%Y-%m-%d")
-                # Moved onto next month
-                if curr_month != satdate[0][k].strftime("%m"):
-                    # Land values available for month
-                    if (pd.DatetimeIndex(df_land['date']).month
-                        == int(curr_month)).any():
-                        # Update land monthly temperatures
-                        landmonthtemp.append(landdaytemp)
-                        # Update satellite monthly temperatures
-                        satmonthtemp.append(satdaytemp)
-                        # Calculate temperature difference and append
-                        tempdiff.append(list(np.array(satdaytemp)
-                                             - np.array(landdaytemp)))
-                    landdaytemp = [] # Reinitialise
-                    satdaytemp = [] # Reinitialise
-                    # Update current month
-                    curr_month = satdate[0][k].strftime("%m")
-                # Update satellite houly temperature
-                sathourtemp.append(curr_t2m[2][2])
-                if k == len(all_t2m) - 1: # Reached last value
-                    # Land value available for date
-                    if (df_land.date == curr_date).any():
-                        # Get mean, covert to celsius and update satellite
-                        # daily temperature
-                        satdaytemp.append(statistics.mean(sathourtemp)-273.15)
-                        # Find value for date
-                        index = df_land[df_land['date']
-                                        == curr_date].index.values[0]
-                        # Update land daily temperatures
-                        landdaytemp.append(df_land['meanTemp'][index])
-                    # land values available for month
-                    if (pd.DatetimeIndex(df_land['date']).month
-                        == int(curr_month)).any():
-                        # Update land monthly temperatures
-                        landmonthtemp.append(landdaytemp)
-                        # Update satellite monthly temperatures
-                        satmonthtemp.append(satdaytemp)
-                        # Calculate temperature difference and append
-                        tempdiff.append(list(np.array(satdaytemp)
-                                             - np.array(landdaytemp)))
+                # Check if land value available for date, only consider dates
+                # where land and satellite values are available
+                if (df_land.date == satdate[0][k].strftime("%Y-%m-%d")).any():
+                    # Moved onto next day or reached last value
+                    if (curr_date != satdate[0][k].strftime("%Y-%m-%d") or
+                        k == len(all_t2m)-1):
+                        # If last value is on the current date
+                        if (curr_date == satdate[0][k].strftime("%Y-%m-%d")
+                            and k == len(all_t2m)-1):
+                            # 2m temperature for hour of current date
+                            curr_t2m = all_t2m[k,:,:]
+                            # Update satellite hourly temperature
+                            sathourtemp.append(curr_t2m[2][2])
+                        # Ensure that the list is not empty
+                        if sathourtemp != []:
+                            # Get mean, convert to celsius and update
+                            # satellite daily temperature
+                            satdaytemp.append(statistics.mean(sathourtemp)
+                                              -273.15)
+                            # Find land value for date
+                            index = df_land[df_land['date']
+                                            == curr_date].index.values[0]
+                            # Update land daily temperatures
+                            landdaytemp.append(df_land['meanTemp'][index])
+                            sathourtemp = [] # Reinitialise
+                        # If last value is not on the current date
+                        if (curr_date != satdate[0][k].strftime("%Y-%m-%d")
+                            and k == len(all_t2m)-1):
+                            # 2m temperature for hour of current date
+                            curr_t2m = all_t2m[k,:,:]
+                            # Convert to celsius and update satellite daily
+                            # temperature
+                            satdaytemp.append(curr_t2m[2][2]-273.15)
+                            # Find land value for date
+                            index = df_land[df_land['date']
+                                            == curr_date].index.values[0]
+                            # Update land daily temperatures
+                            landdaytemp.append(df_land['meanTemp'][index])
+                            sathourtemp = [] # Reinitialise
+                        # Update current date
+                        curr_date = satdate[0][k].strftime("%Y-%m-%d")
+                    # Moved onto next month or reached last value
+                    if (curr_month != satdate[0][k].strftime("%m") or
+                        k == len(all_t2m)-1):
+                        # Ensure that the list is not empty
+                        if satdaytemp != []:
+                            # Update land monthly temperatures
+                            landmonthtemp.append(landdaytemp)
+                            # Update satellite monthly temperatures
+                            satmonthtemp.append(satdaytemp)
+                            # Calculate temperature difference and append
+                            tempdiff.append(list(np.array(satdaytemp)
+                                                  - np.array(landdaytemp)))
+                            landdaytemp = [] # Reinitialise
+                            satdaytemp = [] # Reinitialise
+                        # Update current month
+                        curr_month = satdate[0][k].strftime("%m")
+                    if k < len(all_t2m)-1:
+                        # 2m temperature for hour of current date
+                        curr_t2m = all_t2m[k,:,:]
+                        # Update satellite hourly temperature
+                        sathourtemp.append(curr_t2m[2][2])
             plt.figure()
             plt.boxplot(tempdiff) # Create boxplots
             plt.xlabel('time (months)')
@@ -137,7 +145,8 @@ def main():
             # Make 1D list and append
             year_land.append([val for sublist in landmonthtemp for val
                               in sublist])
-        curr_t2m = all_t2m[0,:,:] # 2m temperature for hour of current date
+        # 2m temperature for hour of current date, use for visualisation
+        curr_t2m = all_t2m[0,:,:]
         plt.figure()
         # Create axes and set projection
         ax1 = plt.axes(projection = ccrs.PlateCarree())     
