@@ -2,13 +2,13 @@
 
 Contained within this repoistory is the code required to reproduce the results from the paper:
 
-> B. McNicholl, Y. H. Lee, S. Winkler, A. Campbell, S. Dev, Analyzing Air Temperature from ERA5 Reanalysis Data, *under review*.
+> B. McNicholl, Y. H. Lee, S. Winkler, A. Campbell, S. Dev, Analyzing Air Temperature from ERA5 Reanalysis Data.
 
 You are welcome to cite this paper if you wish to use some or all of the code. This code is for academic and research purposes only.
 
 ![Sample Regressions](https://user-images.githubusercontent.com/65912701/90794167-5c87cf00-e304-11ea-8f3b-7c1218e18c92.PNG)
 
-*A sample of the results from the paper.*
+*Linear Regressions of Satellite and Land Temperatures for Dublin and Singapore 2015-2019.*
 
 ## Code Organization
 
